@@ -139,6 +139,7 @@ for table, language_dependent in [
     ("Description"   , True),
     ("Relationship"  , False),
   ]:
+  # pymedtermino-argentina
   # For the ArgentinaEdition there aren't necessary language specification neither the INT release definition (because it's replaced for ArgentinaEdition)
   filename = os.path.join(SNOMEDCT_DIR, "Snapshot", "Terminology", "sct2_%s_Snapshot_ArgentinaEdition_%s.txt" % (table, NB))
     
