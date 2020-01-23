@@ -138,12 +138,13 @@ Additional attributes are available for relations, and are listed in the :attr:`
     if pymedtermino.REMOVE_SUPPRESSED_CONCEPTS:
       db_cursor.execute("SELECT active FROM Concept WHERE id=?", (code,))
       if db_cursor.fetchone()[0] != 1: raise ValueError()
-      
-      db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND typeId=900000000000003001 AND active=1", (code,))
+      # pymedtermino-argentina
+      db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND typeId=900000000000003001 AND active=1 AND (languageCode = ?)", (code, pymedtermino.LANGUAGE))
       self.active = 1
       
     else:
-      db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND typeId=900000000000003001", (code,))
+      # pymedtermino-argentina
+      db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND typeId=900000000000003001 AND (languageCode = ?)", (code, pymedtermino.LANGUAGE))
       
     r = db_cursor.fetchone()
     if not r: raise ValueError()
@@ -232,9 +233,11 @@ Additional attributes are available for relations, and are listed in the :attr:`
     
     elif attr == "terms":
       if pymedtermino.REMOVE_SUPPRESSED_TERMS and self.active:
-        db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND active=1", (self.code,))
+        # pymedtermino-argentina
+        db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND active=1 AND (languageCode = ?)", (self.code,pymedtermino.LANGUAGE))
       else:
-        db_cursor.execute("SELECT term FROM Description WHERE conceptId=?", (self.code,))
+        # pymedtermino-argentina
+        db_cursor.execute("SELECT term FROM Description WHERE conceptId=? AND (languageCode = ?)", (self.code,pymedtermino.LANGUAGE))
       self.terms = [l[0] for l in db_cursor.fetchall()]
       return self.terms
     
